@@ -11,9 +11,9 @@ class FlightService {
 
     async createFlight(data) {
         try {
-            if(compareTime(data.arrivalTime , data.departureTime)) {
-                throw {error: 'Arrival time cannot be less than departure time'};
-            }
+            // if(!compareTime(data.arrivalTime , data.departureTime)) {
+            //     throw {error: 'Arrival time cannot be less than departure time'};
+            // }
             const airplane = await this.airplaneRepository.getAirplane(data.airplaneId);
             const filght = await this.flightRepository.createFlight({
                 ...data, totalSeats: airplane.capacity
@@ -25,8 +25,14 @@ class FlightService {
         }
     }
 
-    async getFlightData(){
-
+    async getAllFlights(data){
+        try {
+            const flight = await this.flightRepository.getAllFlight(data);
+            return flight;
+        } catch (error) {
+            console.log("Something went wrong in the repository layer");
+            throw {error};
+        }
     }
 }
 
